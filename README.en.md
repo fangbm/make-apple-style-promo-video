@@ -10,7 +10,7 @@ Use it for software launches, browser-extension demos, feature reels, and produc
 
 [![TermPop - Explain Terms Without Leaving the Page](https://img.youtube.com/vi/JsnLDK-RdbE/hqdefault.jpg)](https://youtu.be/JsnLDK-RdbE)
 
-**TermPop - Explain Terms Without Leaving the Page**  
+**TermPop - Explain Terms Without Leaving the Page**
 Click the preview to [watch on YouTube](https://youtu.be/JsnLDK-RdbE).
 
 ## What It Delivers

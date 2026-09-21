@@ -10,7 +10,7 @@
 
 [![TermPop：不离开页面，也能看懂术语](https://i0.hdslb.com/bfs/archive/81f6ec8caf809ba3d0d803f14ef08fc765af9324.jpg)](https://www.bilibili.com/video/BV1oB3x6aE5e)
 
-**TermPop：不离开页面，也能看懂术语**  
+**TermPop：不离开页面，也能看懂术语**
 点击封面在 [B 站观看](https://www.bilibili.com/video/BV1oB3x6aE5e)。
 
 ## 交付什么
