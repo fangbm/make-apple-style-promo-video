@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>__PRODUCT_NAME__ Promo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, "SF Pro Display", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        font-synthesis: none;
+        --ink: #101624;
+        --muted: #647087;
+        --line: #dce3ed;
+        --accent: #2468ed;
+        --accent-soft: #e7f0ff;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+      body { background: #eef2f8; color: var(--ink); }
+
+      #stage {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f9fc;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        opacity: 0;
+      }
+
+      .dark { background: #050607; color: #fff; }
+      .center { display: grid; place-items: center; text-align: center; }
+      .brand-stack { display: grid; justify-items: center; gap: 34px; }
+      .brand-mark {
+        display: grid;
+        width: 142px;
+        height: 142px;
+        place-items: center;
+        border: 1px solid rgba(255,255,255,.16);
+        border-radius: 30px;
+        background: #fff;
+        color: var(--accent);
+        font-size: 78px;
+        font-weight: 800;
+        box-shadow: 0 26px 65px rgba(60,130,255,.22);
+      }
+      .wordmark { font-size: 56px; font-weight: 760; }
+      .hero-copy { font-size: 98px; line-height: .98; font-weight: 780; letter-spacing: 0; }
+      .hero-copy span { display: block; }
+      .hero-sub { color: #929bac; font-size: 34px; }
+      .platforms { color: #5f9cff; font-size: 22px; font-weight: 760; }
+
+      .browser {
+        position: absolute;
+        left: 92px;
+        top: 64px;
+        width: 1736px;
+        height: 952px;
+        overflow: hidden;
+        border: 1px solid #d8e0ea;
+        border-radius: 38px;
+        background: #fff;
+        box-shadow: 0 38px 80px rgba(28,39,58,.13);
+      }
+      .browser-bar {
+        display: flex;
+        height: 80px;
+        align-items: center;
+        gap: 13px;
+        padding: 0 30px;
+        border-bottom: 1px solid #e2e7ef;
+        background: #fafbfc;
+      }
+      .browser-bar i { width: 14px; height: 14px; border-radius: 50%; background: #ff5f57; }
+      .browser-bar i:nth-child(2) { background: #febc2e; }
+      .browser-bar i:nth-child(3) { background: #28c840; }
+      .address {
+        height: 44px;
+        margin-left: 18px;
+        padding: 10px 24px;
+        flex: 1;
+        border-radius: 22px;
+        background: #edf2f8;
+        color: #778398;
+        font-size: 20px;
+      }
+      .browser-body { position: relative; height: calc(100% - 80px); padding: 94px 104px; }
+      .split { display: grid; grid-template-columns: minmax(0, 1fr) 430px; gap: 100px; }
+      .eyebrow { color: var(--accent); font-size: 24px; font-weight: 760; }
+      h1 { max-width: 1050px; margin: 20px 0 40px; font-size: 78px; line-height: 1.03; letter-spacing: 0; }
+      .article { max-width: 1150px; color: #445066; font-size: 35px; line-height: 1.62; }
+      .article p { margin: 0 0 30px; }
+      .term { position: relative; display: inline-block; color: #294160; white-space: nowrap; }
+      .term::after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 3px;
+        height: 7px;
+        border-radius: 5px;
+        background: #4c8eff;
+        content: "";
+        transform: scaleX(0);
+        transform-origin: left center;
+        z-index: 0;
+      }
+      .term > span { position: relative; z-index: 1; }
+
+      .guide { align-self: start; margin-top: 74px; display: grid; grid-template-columns: 120px 1fr; gap: 26px; }
+      .guide-number { color: #e2ebfc; font-size: 128px; font-weight: 800; line-height: .8; }
+      .guide-copy { padding-left: 24px; border-left: 3px solid var(--accent); }
+      .guide-copy strong { display: block; font-size: 30px; }
+      .guide-copy span { display: block; margin-top: 16px; color: var(--muted); font-size: 22px; line-height: 1.5; }
+      .guide-flow { grid-column: 2; display: flex; align-items: center; gap: 16px; color: var(--accent); font-size: 18px; font-weight: 700; }
+      .guide-flow i { width: 32px; height: 1px; background: #9bbcf7; }
+
+      .cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 42px;
+        z-index: 40;
+        filter: drop-shadow(0 4px 5px rgba(0,0,0,.2));
+      }
+      .cursor::before, .cursor::after {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+        content: "";
+        clip-path: polygon(0 0, 0 33px, 8px 25px, 15px 42px, 22px 39px, 15px 23px, 30px 23px);
+      }
+      .cursor::before { width: 30px; height: 42px; background: #fff; }
+      .cursor::after {
+        left: 2px;
+        top: 3px;
+        width: 26px;
+        height: 36px;
+        background: #101624;
+        clip-path: polygon(0 0, 0 27px, 7px 20px, 13px 35px, 18px 32px, 12px 18px, 26px 18px);
+      }
+
+      .popover {
+        position: absolute;
+        width: 490px;
+        min-height: 290px;
+        padding: 30px 34px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255,255,255,.98);
+        box-shadow: 0 30px 72px rgba(28,39,58,.18);
+        z-index: 30;
+      }
+      .popover::after {
+        position: absolute;
+        left: var(--arrow-left, 70px);
+        width: 24px;
+        height: 24px;
+        background: #fff;
+        content: "";
+        transform: rotate(45deg);
+      }
+      .popover[data-placement="above"]::after { bottom: -12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .popover[data-placement="below"]::after { top: -12px; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+      .popover-head { display: flex; align-items: center; justify-content: space-between; }
+      .popover-title { font-size: 34px; font-weight: 780; }
+      .refresh { color: var(--accent); font-size: 26px; }
+      .popover-type { margin-top: 12px; color: var(--accent); font-size: 20px; font-weight: 720; }
+      .popover p { color: #526078; font-size: 23px; line-height: 1.55; }
+      .tags { display: flex; gap: 10px; }
+      .tags span { padding: 8px 12px; border-radius: 8px; background: #eff4fd; color: #304b75; font-size: 16px; font-weight: 680; }
+
+      .selection { position: relative; display: inline-block; }
+      .selection::before {
+        position: absolute;
+        inset: 0 -4px;
+        border-radius: 4px;
+        background: #a9c9ff;
+        content: "";
+        transform: scaleX(0);
+        transform-origin: left center;
+        z-index: 0;
+      }
+      .selection span { position: relative; z-index: 1; }
+      .menu {
+        position: absolute;
+        width: 330px;
+        overflow: hidden;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 24px 60px rgba(28,39,58,.18);
+        z-index: 32;
+      }
+      .menu-item { display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 0 14px; border-radius: 10px; color: #354157; font-size: 19px; }
+      .menu-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 720; }
+      .menu-icon { width: 24px; text-align: center; color: var(--accent); }
+
+      .doc-window {
+        position: absolute;
+        left: 178px;
+        top: 82px;
+        width: 1564px;
+        height: 920px;
+        overflow: hidden;
+        border-radius: 34px;
+        background: #e9eef6;
+        box-shadow: 0 36px 78px rgba(28,39,58,.14);
+      }
+      .doc-bar { height: 74px; padding: 26px 34px; border-bottom: 1px solid #dce3ed; color: #78849a; font-size: 18px; }
+      .paper { position: relative; width: 1180px; height: 730px; margin: 56px auto; padding: 68px 78px; background: #fff; font-family: Georgia, serif; }
+      .paper h2 { margin: 0 0 40px; text-align: center; font-size: 42px; }
+      .paper-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; color: #4b5568; font-size: 25px; line-height: 1.6; }
+      .paper-term { position: relative; white-space: nowrap; }
+      .paper-term::after { position: absolute; left: 0; right: 0; bottom: -2px; height: 5px; border-radius: 3px; background: #4c8eff; content: ""; transform: scaleX(0); transform-origin: left; }
+
+      .proof-wrap { display: grid; height: 100%; align-content: center; justify-items: center; gap: 58px; }
+      .proof-wrap h2 { margin: 0; max-width: 1200px; text-align: center; font-size: 84px; line-height: 1; }
+      .proof-row { display: grid; grid-template-columns: repeat(3, 360px); gap: 24px; }
+      .proof { padding: 32px; border-top: 2px solid var(--accent); }
+      .proof strong { display: block; font-size: 28px; }
+      .proof span { display: block; margin-top: 12px; color: var(--muted); font-size: 20px; line-height: 1.5; }
+
+      .end-copy { font-size: 82px; line-height: .98; font-weight: 780; letter-spacing: 0; }
+      .end-copy span { display: block; }
+    </style>
+  </head>
+  <body>
+    <main id="stage">
+      <section class="scene dark center" id="s1">
+        <div class="brand-stack">
+          <div class="brand-mark" id="s1Mark">__PRODUCT_INITIAL__</div>
+          <div class="wordmark" id="s1Name">__PRODUCT_NAME__</div>
+          <div class="hero-copy"><span id="s1Line1">__TAGLINE_LINE_1__</span><span id="s1Line2">__TAGLINE_LINE_2__</span></div>
+          <div class="hero-sub" id="s1Sub">__SUBTITLE__</div>
+        </div>
+      </section>
+
+      <section class="scene" id="s2">
+        <div class="browser" id="s2Browser">
+          <div class="browser-bar"><i></i><i></i><i></i><div class="address">product.example/read</div></div>
+          <div class="browser-body split" id="s2Body">
+            <div>
+              <div class="eyebrow">核心体验</div>
+              <h1>把复杂信息，变成可理解的下一步。</h1>
+              <div class="article">
+                <p>当内容出现 <span class="term" id="s2Term" data-qa="hover-target"><span>__PRIMARY_TERM__</span></span> 时，产品会在原位置提供需要的帮助。</p>
+                <p>工作流继续，理解不会被打断。</p>
+              </div>
+            </div>
+            <aside class="guide" id="s2Guide">
+              <div class="guide-number">01</div>
+              <div class="guide-copy"><strong>停在目标上</strong><span>保留当前位置，结果自动贴近目标。</span></div>
+              <div class="guide-flow"><span>识别</span><i></i><span>上下文</span><i></i><span>结果</span></div>
+            </aside>
+            <div class="cursor" id="s2Cursor" data-qa="hover-cursor"></div>
+            <div class="popover" id="s2Card" data-qa="hover-card" data-qa-target="s2Term">
+              <div class="popover-head"><div class="popover-title">__PRIMARY_TERM__</div><div class="refresh">↻</div></div>
+              <div class="popover-type">__PRIMARY_TYPE__</div>
+              <p>__PRIMARY_EXPLANATION__</p>
+              <div class="tags"><span>即时</span><span>原位</span><span>上下文</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="s3">
+        <div class="browser" id="s3Browser">
+          <div class="browser-bar"><i></i><i></i><i></i><div class="address">product.example/workflow</div></div>
+          <div class="browser-body split" id="s3Body">
+            <div>
+              <div class="eyebrow">由你控制</div>
+              <h1>只处理你真正关心的内容。</h1>
+              <div class="article"><p>选中 <span class="selection" id="s3Selection" data-qa="selection-target"><span>__SECOND_TERM__</span></span>，再调用产品动作。</p></div>
+            </div>
+            <aside class="guide" id="s3Guide">
+              <div class="guide-number">02</div>
+              <div class="guide-copy"><strong>选中任意内容</strong><span>只处理当前选择，保持界面安静。</span></div>
+              <div class="guide-flow"><span>选择</span><i></i><span>操作</span><i></i><span>完成</span></div>
+            </aside>
+            <div class="cursor" id="s3Cursor" data-qa="selection-cursor"></div>
+            <div class="menu" id="s3Menu" data-qa="context-menu">
+              <div class="menu-item"><span class="menu-icon">⌘</span><span>复制</span></div>
+              <div class="menu-item active" id="s3Action"><span class="menu-icon">P</span><span>用 __PRODUCT_NAME__ 处理</span></div>
+              <div class="menu-item"><span class="menu-icon">↗</span><span>搜索网页</span></div>
+            </div>
+            <div class="popover" id="s3Card" data-qa="selection-card" data-qa-target="s3Selection">
+              <div class="popover-head"><div class="popover-title">__SECOND_TERM__</div><div class="refresh">↻</div></div>
+              <div class="popover-type">已结合当前选择</div>
+              <p>结果在原页面完成，不需要切换应用或打断当前任务。</p>
+              <div class="tags"><span>选择</span><span>控制</span><span>快速</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="s4">
+        <div class="doc-window" id="s4Window">
+          <div class="doc-bar">__PRODUCT_NAME__ DOCUMENT · 4 / 15</div>
+          <div class="paper" id="s4Paper">
+            <h2>Designed for the work already in front of you</h2>
+            <div class="paper-grid">
+              <div><p>Important concepts stay connected to their original context.</p><p>The workflow remains calm while complex details become easier to act on.</p><p>Modern tools can process <span class="paper-term" id="s4Term" data-qa="document-target">__PRIMARY_TERM__</span> without leaving the page.</p></div>
+              <div><p>Results appear only when needed and remain anchored to the source.</p><p>Layout, language, and interaction work together as one system.</p></div>
+            </div>
+            <div class="popover" id="s4Card" data-qa="document-card" data-qa-target="s4Term">
+              <div class="popover-head"><div class="popover-title">__PRIMARY_TERM__</div><div class="refresh">↻</div></div>
+              <div class="popover-type">__PRIMARY_TYPE__</div>
+              <p>__PRIMARY_EXPLANATION__</p>
+              <div class="tags"><span>文档</span><span>原位</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="s5">
+        <div class="proof-wrap">
+          <div class="eyebrow">为真实工作而生</div>
+          <h2>轻量交互，刚好的产品反馈。</h2>
+          <div class="proof-row">
+            <div class="proof"><strong>快速</strong><span>先呈现核心价值，再逐步补充细节。</span></div>
+            <div class="proof"><strong>克制</strong><span>只在用户需要时出现，不争夺注意力。</span></div>
+            <div class="proof"><strong>可靠</strong><span>状态、位置和结果保持一致。</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene dark center" id="s6">
+        <div class="brand-stack">
+          <div class="brand-mark" id="s6Mark">__PRODUCT_INITIAL__</div>
+          <div class="wordmark" id="s6Name">__PRODUCT_NAME__</div>
+          <div class="end-copy" id="s6Title"><span>__TAGLINE_LINE_1__</span><span>__TAGLINE_LINE_2__</span></div>
+          <div class="hero-sub" id="s6Sub">__SUBTITLE__</div>
+          <div class="platforms" id="s6Platforms">WEB · DESKTOP · MOBILE</div>
+        </div>
+      </section>
+    </main>
+
+    <script id="promo-metadata" type="application/json">
+      {
+        "duration": 31.2,
+        "cues": {
+          "hoverMark": 5.05,
+          "hoverCard": 6.95,
+          "selection": 12.0,
+          "selectionCard": 14.8,
+          "documentMark": 20.15,
+          "endCard": 26.9
+        }
+      }
+    </script>
+    <script>
+      const promoMetadata = JSON.parse(document.getElementById('promo-metadata').textContent);
+      const cue = promoMetadata.cues;
+      const $ = (id) => document.getElementById(id);
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const mix = (from, to, amount) => from + (to - from) * amount;
+      const phase = (time, start, end) => clamp((time - start) / (end - start), 0, 1);
+      const easeOutQuint = (x) => 1 - Math.pow(1 - x, 5);
+      const easeInOutCubic = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      const easeOutBack = (x) => { const c1 = 1.18; const c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+      const fadeWindow = (time, inStart, inEnd, outStart, outEnd) => phase(time, inStart, inEnd) * (1 - phase(time, outStart, outEnd));
+      const pose = (node, opacity, x = 0, y = 0, scale = 1) => {
+        node.style.opacity = String(opacity);
+        node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+      };
+      const rectWithin = (node, ancestor) => {
+        const value = node.getBoundingClientRect();
+        const base = ancestor.getBoundingClientRect();
+        return { x: value.left - base.left, y: value.top - base.top, width: value.width, height: value.height };
+      };
+
+      const placeCard = (card, target, container, gap = 20) => {
+        const targetRect = rectWithin(target, container);
+        const center = targetRect.x + targetRect.width / 2;
+        const left = clamp(center - card.offsetWidth / 2, 24, container.clientWidth - card.offsetWidth - 24);
+        const minimum = 24;
+        const maximum = Math.max(minimum, container.clientHeight - card.offsetHeight - minimum);
+        const aboveTop = targetRect.y - card.offsetHeight - gap;
+        const belowTop = targetRect.y + targetRect.height + gap;
+        const aboveFits = aboveTop >= minimum;
+        const belowFits = belowTop <= maximum;
+        const above = aboveFits || (!belowFits && targetRect.y >= container.clientHeight - (targetRect.y + targetRect.height));
+        const top = clamp(above ? aboveTop : belowTop, minimum, maximum);
+        const arrowLeft = clamp(center - left - 12, 30, card.offsetWidth - 54);
+        card.style.left = `${left}px`;
+        card.style.top = `${top}px`;
+        card.style.setProperty('--arrow-left', `${arrowLeft}px`);
+        card.style.transformOrigin = `${arrowLeft + 12}px ${above ? '100%' : '0%'}`;
+        card.dataset.placement = above ? 'above' : 'below';
+      };
+
+      const alignAnchors = () => {
+        const body2 = $('s2Body');
+        const hover = rectWithin($('s2Term'), body2);
+        placeCard($('s2Card'), $('s2Term'), body2, 18);
+
+        const body3 = $('s3Body');
+        const selection = rectWithin($('s3Selection'), body3);
+        const menuLeft = clamp(selection.x + selection.width - 18, 24, body3.clientWidth - $('s3Menu').offsetWidth - 24);
+        const menuTop = clamp(selection.y + selection.height + 18, 24, body3.clientHeight - $('s3Menu').offsetHeight - 24);
+        $('s3Menu').style.left = `${menuLeft}px`;
+        $('s3Menu').style.top = `${menuTop}px`;
+        placeCard($('s3Card'), $('s3Selection'), body3, 18);
+
+        const paper = $('s4Paper');
+        placeCard($('s4Card'), $('s4Term'), paper, 18);
+
+        const action = rectWithin($('s3Action'), body3);
+        return {
+          hover: { x: hover.x + hover.width * .52, y: hover.y + hover.height * .52 },
+          selection: { x: selection.x + selection.width - 8, y: selection.y + selection.height * .58 },
+          action: { x: action.x + action.width * .55, y: action.y + action.height * .52 },
+        };
+      };
+
+      let anchors;
+      const ready = async () => {
+        await document.fonts.ready;
+        await Promise.all(Array.from(document.images).map((img) => img.complete ? Promise.resolve() : new Promise((resolve) => { img.onload = img.onerror = resolve; })));
+        anchors = alignAnchors();
+      };
+      window.__PROMO_READY = ready();
+      window.__PROMO_QA_SELECTORS = ['[data-qa]'];
+
+      window.renderAt = (time) => {
+        if (!anchors) anchors = alignAnchors();
+        const scenes = [$('s1'), $('s2'), $('s3'), $('s4'), $('s5'), $('s6')];
+        scenes[0].style.opacity = fadeWindow(time, 0, .25, 3.45, 4.05);
+        scenes[1].style.opacity = fadeWindow(time, 3.55, 4.05, 10.55, 11.15);
+        scenes[2].style.opacity = fadeWindow(time, 10.70, 11.20, 17.35, 18.00);
+        scenes[3].style.opacity = fadeWindow(time, 17.55, 18.05, 23.00, 23.65);
+        scenes[4].style.opacity = fadeWindow(time, 23.15, 23.70, 26.65, 27.20);
+        scenes[5].style.opacity = phase(time, 26.75, 27.30);
+
+        let p = easeOutQuint(phase(time, .15, .75));
+        pose($('s1Mark'), p, 0, mix(35, 0, p), mix(.92, 1, p));
+        pose($('s1Name'), phase(time, .45, 1.05), 0, mix(30, 0, p));
+        p = easeOutQuint(phase(time, .85, 1.55));
+        pose($('s1Line1'), phase(time, .85, 1.15), 0, mix(80, 0, p), mix(.96, 1, p));
+        p = easeOutQuint(phase(time, 1.25, 2.05));
+        pose($('s1Line2'), phase(time, 1.25, 1.60), 0, mix(90, 0, p), mix(.96, 1, p));
+        pose($('s1Sub'), phase(time, 2.05, 2.70), 0, mix(24, 0, phase(time, 2.05, 2.70)));
+
+        p = easeOutQuint(phase(time, 3.65, 4.45));
+        pose($('s2Browser'), phase(time, 3.55, 4.05), 0, mix(110, 0, p), mix(.91, 1, p));
+        pose($('s2Guide'), phase(time, 4.15, 4.80), mix(40, 0, p));
+        $('s2Term').style.setProperty('--mark', String(easeOutQuint(phase(time, cue.hoverMark, cue.hoverMark + .60))));
+        $('s2Term').style.cssText += '';
+        $('s2Term').querySelector('span').parentElement.style.setProperty('--unused', '0');
+        const hoverMark = $('s2Term');
+        hoverMark.style.setProperty('--progress', easeOutQuint(phase(time, cue.hoverMark, cue.hoverMark + .60)));
+        hoverMark.style.setProperty('color', '#294160');
+        hoverMark.style.setProperty('text-decoration-thickness', '0');
+        hoverMark.classList.toggle('active', time >= cue.hoverMark);
+        const cp2 = easeInOutCubic(phase(time, 5.35, 6.65));
+        pose($('s2Cursor'), phase(time, 5.20, 5.45) * (1 - phase(time, 7.20, 7.50)), mix(1420, anchors.hover.x, cp2), mix(710, anchors.hover.y, cp2));
+        p = easeOutBack(phase(time, cue.hoverCard, cue.hoverCard + .75));
+        pose($('s2Card'), phase(time, cue.hoverCard, cue.hoverCard + .35), 0, mix(30, 0, p), mix(.92, 1, p));
+
+        p = easeOutQuint(phase(time, 10.85, 11.65));
+        pose($('s3Browser'), phase(time, 10.70, 11.20), mix(110, 0, p), 0, mix(.96, 1, p));
+        pose($('s3Guide'), phase(time, 11.20, 11.80), mix(38, 0, p));
+        $('s3Selection').style.setProperty('--selection', easeInOutCubic(phase(time, cue.selection, cue.selection + .90)));
+        const cp3 = easeInOutCubic(phase(time, 11.90, 13.05));
+        const cpMenu = easeInOutCubic(phase(time, 13.30, 14.05));
+        pose($('s3Cursor'), phase(time, 11.80, 12.10) * (1 - phase(time, 14.60, 14.90)), mix(mix(1440, anchors.selection.x, cp3), anchors.action.x, cpMenu), mix(mix(700, anchors.selection.y, cp3), anchors.action.y, cpMenu));
+        p = easeOutBack(phase(time, 13.15, 13.85));
+        pose($('s3Menu'), phase(time, 13.15, 13.50) * (1 - phase(time, 14.55, 14.85)), 0, mix(-14, 0, p), mix(.93, 1, p));
+        p = easeOutBack(phase(time, cue.selectionCard, cue.selectionCard + .75));
+        pose($('s3Card'), phase(time, cue.selectionCard, cue.selectionCard + .35), 0, mix(28, 0, p), mix(.92, 1, p));
+
+        p = easeOutQuint(phase(time, 17.70, 18.55));
+        pose($('s4Window'), phase(time, 17.55, 18.05), 0, mix(120, 0, p), mix(.92, 1, p));
+        $('s4Term').classList.toggle('active', time >= cue.documentMark);
+        p = easeOutBack(phase(time, 20.80, 21.55));
+        pose($('s4Card'), phase(time, 20.80, 21.15), 0, mix(28, 0, p), mix(.92, 1, p));
+
+        p = easeOutQuint(phase(time, 23.25, 24.05));
+        document.querySelector('.proof-wrap').style.opacity = String(phase(time, 23.25, 23.75));
+        document.querySelector('.proof-wrap').style.transform = `translateY(${mix(55, 0, p)}px)`;
+
+        p = easeOutQuint(phase(time, cue.endCard, cue.endCard + .70));
+        pose($('s6Mark'), p, 0, mix(34, 0, p), mix(.92, 1, p));
+        pose($('s6Name'), phase(time, 27.15, 27.80), 0, mix(26, 0, p));
+        p = easeOutQuint(phase(time, 27.55, 28.30));
+        pose($('s6Title'), phase(time, 27.55, 27.90), 0, mix(68, 0, p), mix(.96, 1, p));
+        pose($('s6Sub'), phase(time, 28.25, 28.90), 0, mix(20, 0, phase(time, 28.25, 28.90)));
+        pose($('s6Platforms'), phase(time, 28.75, 29.35), 0, mix(18, 0, phase(time, 28.75, 29.35)));
+
+        document.documentElement.style.setProperty('--hover-mark', easeOutQuint(phase(time, cue.hoverMark, cue.hoverMark + .60)));
+        document.documentElement.style.setProperty('--selection-mark', easeInOutCubic(phase(time, cue.selection, cue.selection + .90)));
+        document.documentElement.style.setProperty('--doc-mark', easeOutQuint(phase(time, cue.documentMark, cue.documentMark + .55)));
+      };
+    </script>
+    <style>
+      #s2Term::after { transform: scaleX(var(--hover-mark, 0)); }
+      #s3Selection::before { transform: scaleX(var(--selection-mark, 0)); }
+      #s4Term::after { transform: scaleX(var(--doc-mark, 0)); }
+    </style>
+  </body>
+</html>
